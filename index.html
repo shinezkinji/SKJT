@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NETSEC // ALCHE EXPERIMENTAL LAB</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+      height: 600vh; /* Controlled by Lenis Virtual Scroll */
+    }
+    .font-syne {
+      font-family: 'Syne', sans-serif;
+    }
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .ui-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .interactive {
+      pointer-events: auto;
+    }
+    /* Blueprint Overlay Grid */
+    .grid-blueprint {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+  </style>
+</head>
+<body class="grid-blueprint">
+
+  <canvas id="webgl-canvas"></canvas>
+
+  <div class="ui-layer flex flex-col justify-between p-6 md:p-10 mix-blend-difference">
+    
+    <header class="flex justify-between items-start w-full">
+      <div class="flex items-center space-x-6">
+        <div class="font-syne font-black text-2xl tracking-tighter text-white">
+          NETSEC<span class="text-cyan-400">.</span>LAB
+        </div>
+        <div class="hidden md:flex space-x-6 text-[11px] text-neutral-400 tracking-widest uppercase">
+          <span>// 01. FIREWALL</span>
+          <span>// 02. IDS/IPS</span>
+          <span>// 03. ENCRYPTION</span>
+          <span>// 04. ZERO-TRUST</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div class="hidden sm:flex items-center space-x-2 text-[10px] text-neutral-400 border border-neutral-700 px-3 py-1 rounded-full">
+          <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+          <span id="fps-counter">SECURE NODE // 60 FPS</span>
+        </div>
+        <div class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center interactive cursor-pointer hover:border-white transition">
+          <span class="text-xs font-bold font-syne">A</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="w-full flex justify-between items-end">
+      <div class="max-w-md">
+        <div id="section-tag" class="text-[10px] text-cyan-400 tracking-[0.3em] uppercase mb-2">
+          [ 01 // PERIMETER GATEWAY ]
+        </div>
+        <h2 id="section-title" class="font-syne font-extrabold text-3xl md:text-5xl uppercase tracking-tight text-white leading-none">
+          Deep Packet Inspection
+        </h2>
+        <p id="section-desc" class="text-neutral-400 text-xs md:text-sm mt-3 font-normal leading-relaxed">
+          Memfilter ancaman di gerbang terluar dengan menganalisis muatan data TCP/IP secara real-time.
+        </p>
+      </div>
+
+      <div class="text-right font-mono text-[10px] tracking-widest text-neutral-500">
+        <div id="progress-indicator" class="text-white font-bold text-sm">00%</div>
+        <div>SCROLL TO NAVIGATE</div>
+      </div>
+    </div>
+
+    <footer class="flex justify-between items-center text-[10px] text-neutral-500 tracking-widest border-t border-neutral-800/80 pt-4">
+      <div>ISO/IEC 27001 COMPLIANT</div>
+      <div class="hidden md:block">LAT: -6.9175 // LON: 107.6191</div>
+      <div>© 2026 ALCHE REPLICA // NETDEFENSE</div>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+  <script>
+    // ==========================================
+    // 1. LENIS SMOOTH MOMENTUM SCROLL (ALCHE PHYSICS)
+    // ==========================================
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // ==========================================
+    // 2. THREE.JS SCENE SETUP
+    // ==========================================
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 7.5);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // ==========================================
+    // 3. BACKGROUND TYPOGRAPHY TEXTURE (ALCHE GIANT TEXT)
+    // ==========================================
+    function createTextCanvasTexture(text) {
+      const cvs = document.createElement('canvas');
+      cvs.width = 2048;
+      cvs.height = 1024;
+      const ctx = cvs.getContext('2d');
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+      ctx.font = '900 360px "Syne", sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, cvs.width / 2, cvs.height / 2);
+      return new THREE.CanvasTexture(cvs);
+    }
+
+    const bgTextTexture = createTextCanvasTexture('CYBER');
+    const bgTextPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(12, 6),
+      new THREE.MeshBasicMaterial({ map: bgTextTexture, transparent: true, opacity: 0.18 })
+    );
+    bgTextPlane.position.z = -2;
+    scene.add(bgTextPlane);
+
+    // ==========================================
+    // 4. REFRACTIVE GLASS PRISM WITH DISPERSION (GLSL)
+    // ==========================================
+    const prismGroup = new THREE.Group();
+    scene.add(prismGroup);
+
+    const prismGeo = new THREE.TetrahedronGeometry(1.9, 0);
+
+    // GLSL Shader Chromatic Aberration Dispersion Effect
+    const prismMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uProgress: { value: 0 },
+        uMouse: { value: new THREE.Vector2(0, 0) }
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform float uProgress;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        void main() {
+          vec3 viewDir = normalize(-vPosition);
+          float fresnel = 1.0 - max(dot(viewDir, vNormal), 0.0);
+          fresnel = pow(fresnel, 2.2);
+
+          // Spectral dispersion split
+          float r = sin(fresnel * 6.0 + uTime * 2.0) * 0.5 + 0.5;
+          float g = sin(fresnel * 6.0 + uTime * 2.0 + 2.09) * 0.5 + 0.5;
+          float b = sin(fresnel * 6.0 + uTime * 2.0 + 4.18) * 0.5 + 0.5;
+
+          vec3 rainbow = vec3(r, g, b);
+          vec3 darkCore = vec3(0.05, 0.08, 0.12);
+          vec3 finalColor = mix(darkCore, rainbow, fresnel);
+
+          gl_FragColor = vec4(finalColor, 0.88);
+        }
+      `,
+      transparent: true,
+      side: THREE.DoubleSide
+    });
+
+    const prismMesh = new THREE.Mesh(prismGeo, prismMat);
+    prismGroup.add(prismMesh);
+
+    // Technical Outline Frame
+    const wireframeGeo = new THREE.WireframeGeometry(prismGeo);
+    const wireframeMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4 });
+    const wireframeLines = new THREE.LineSegments(wireframeGeo, wireframeMat);
+    prismGroup.add(wireframeLines);
+
+    // ==========================================
+    // 5. 3D CURVED CYLINDER SHOWCASE (DETIK 0:02 - 0:04)
+    // ==========================================
+    const cylinderCarousel = new THREE.Group();
+    scene.add(cylinderCarousel);
+    cylinderCarousel.position.set(0, 0, -15); // Hidden at start
+
+    function createSecuritySlide(title, code, desc, bgGrad) {
+      const cvs = document.createElement('canvas');
+      cvs.width = 1024;
+      cvs.height = 600;
+      const ctx = cvs.getContext('2d');
+
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(20, 20, cvs.width - 40, cvs.height - 40);
+
+      ctx.font = 'bold 28px "JetBrains Mono"';
+      ctx.fillStyle = '#00f0ff';
+      ctx.fillText(`// SECURITY PROTOCOL: ${code}`, 60, 90);
+
+      ctx.font = '900 64px "Syne"';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(title, 60, 220);
+
+      ctx.font = '28px "JetBrains Mono"';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText(desc, 60, 310);
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.fillRect(60, 460, 200, 8);
+      ctx.font = '20px "JetBrains Mono"';
+      ctx.fillText('STATUS: FULLY ACTIVE', 60, 510);
+
+      return new THREE.CanvasTexture(cvs);
+    }
+
+    const slides = [
+      { t: 'NGFW FIREWALL', c: '01/FLTR', d: 'Stateful packet inspection & access gates.', col: '#0a101d' },
+      { t: 'IDS / IPS ANOMALY', c: '02/INTR', d: 'Zero-day attack & DDoS active mitigation.', col: '#1a1105' },
+      { t: 'AES-256 CIPHER', c: '03/ENCR', d: 'Quantum-resistant end-to-end data encryption.', col: '#061712' },
+      { t: 'ZERO TRUST CORE', c: '04/ZTNA', d: 'Continuous authentication for every identity.', col: '#110d1c' }
+    ];
+
+    const cardRadius = 5.0;
+    slides.forEach((s, i) => {
+      const angle = (i - 1.5) * 0.9;
+      const tex = createSecuritySlide(s.t, s.c, s.d, s.col);
+      const mat = new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide });
+      const plane = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.2, 8, 8), mat);
+      plane.position.x = Math.sin(angle) * cardRadius;
+      plane.position.z = Math.cos(angle) * cardRadius - cardRadius;
+      plane.rotation.y = angle;
+      cylinderCarousel.add(plane);
+    });
+
+    // ==========================================
+    // 6. SCROLL DRIVEN ANIMATION (SYNCHRONIZED WITH LENIS)
+    // ==========================================
+    const dynamicData = [
+      {
+        tag: '[ 01 // PERIMETER DEFENSE ]',
+        title: 'Deep Packet Inspection',
+        desc: 'Memvalidasi header dan payload paket data untuk memblokir port rentan & exploit sebelum masuk ke LAN.'
+      },
+      {
+        tag: '[ 02 // THREAT MITIGATION ]',
+        title: 'Intrusion Prevention (IPS)',
+        desc: 'Mendeteksi serangan DDoS, brute-force, dan SQL injection dalam hitungan milidetik secara otonom.'
+      },
+      {
+        tag: '[ 03 // DATA PRIVACY ]',
+        title: 'End-to-End Cryptography',
+        desc: 'Mengamankan transmisi data menggunakan saluran TLS 1.3 dan cipher AES-256-GCM.'
+      },
+      {
+        tag: '[ 04 // ZERO TRUST ]',
+        title: 'Never Trust, Always Verify',
+        desc: 'Validasi identitas berkelanjutan dengan prinsip hak akses terkecil (Principle of Least Privilege).'
+      }
+    ];
+
+    let scrollProgress = 0;
+
+    lenis.on('scroll', (e) => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress = Math.min(1, Math.max(0, e.animatedScroll / maxScroll));
+
+      // Update Percentage in UI
+      const pct = Math.round(scrollProgress * 100);
+      document.getElementById('progress-indicator').innerText = `${pct < 10 ? '0' + pct : pct}%`;
+
+      // Update Texts Based on Progress
+      const activeIdx = Math.min(3, Math.floor(scrollProgress * 4));
+      document.getElementById('section-tag').innerText = dynamicData[activeIdx].tag;
+      document.getElementById('section-title').innerText = dynamicData[activeIdx].title;
+      document.getElementById('section-desc').innerText = dynamicData[activeIdx].desc;
+
+      // STAGE 1 (0.0 - 0.35): Hero Prism to Carousel
+      if (scrollProgress < 0.35) {
+        const factor = scrollProgress / 0.35;
+        prismGroup.position.z = -factor * 8;
+        prismGroup.rotation.y = factor * 4;
+        cylinderCarousel.position.z = -15 + factor * 16;
+        cylinderCarousel.rotation.y = 0;
+        scene.background.setHex(0x000000);
+      } 
+      // STAGE 2 (0.35 - 0.70): Rotating Cylinder Carousel
+      else if (scrollProgress < 0.70) {
+        const factor = (scrollProgress - 0.35) / 0.35;
+        cylinderCarousel.position.z = 1.0;
+        cylinderCarousel.rotation.y = -factor * 2.8;
+        scene.background.setHex(0x000000);
+      } 
+      // STAGE 3 (0.70 - 1.00): White Inversion & Blueprint Vector (Detik 0:08 - 0:10)
+      else {
+        const factor = (scrollProgress - 0.70) / 0.30;
+        cylinderCarousel.position.z = -15;
+        prismGroup.position.set(0, 0, 1.5);
+        prismGroup.scale.setScalar(1.2);
+        prismGroup.rotation.y = 4 + factor * 5;
+
+        // Flash Invert Background like Alche
+        if (factor > 0.1 && factor < 0.5) {
+          scene.background.setHex(0xf0f0f0);
+        } else {
+          scene.background.setHex(0x020408);
+        }
+      }
+    });
+
+    // ==========================================
+    // 7. MOUSE PARALLAX & CONTINUOUS RENDER
+    // ==========================================
+    let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // Shader Time Uniform
+      prismMat.uniforms.uTime.value = elapsedTime;
+
+      // Mouse Inertia
+      targetMouseX += (mouseX - targetMouseX) * 0.05;
+      targetMouseY += (mouseY - targetMouseY) * 0.05;
+
+      camera.position.x = targetMouseX * 0.4;
+      camera.position.y = -targetMouseY * 0.4;
+      camera.lookAt(0, 0, 0);
+
+      // Prism Idle Floating
+      prismGroup.rotation.x = targetMouseY * 0.4 + Math.sin(elapsedTime * 0.5) * 0.1;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Window Resize Handler
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    });
+  </script>
+</body>
+</html>
