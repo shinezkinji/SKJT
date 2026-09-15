@@ -1,0 +1,331 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #05070a;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #f1f5f9;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+.stage-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+/* Format Rasio 16:9 Pas */
+.screen-16-9 {
+  width: 100%;
+  max-width: calc((100vh - 3rem) * 16 / 9);
+  aspect-ratio: 16 / 9;
+  position: relative;
+  background-color: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Navigasi Atas */
+.top-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+}
+
+.brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.pill-nav {
+  display: flex;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50px;
+  padding: 5px;
+}
+
+.pill-item {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 8px 18px;
+  border-radius: 40px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pill-item.active {
+  background: #ffffff;
+  color: #05070a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.tech-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  letter-spacing: 1px;
+}
+
+.tech-badge b {
+  color: #38bdf8;
+}
+
+/* Track Slide Horizontal */
+.carousel-track {
+  display: flex;
+  width: 300%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide-item {
+  position: relative;
+  width: 33.3333%;
+  height: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Video Layer */
+.video-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.slide-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay Gelap Transparan untuk Keterbacaan Teks */
+.overlay-mesh {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(5, 7, 10, 0.2) 0%, rgba(5, 7, 10, 0.8) 85%),
+              linear-gradient(to right, rgba(5, 7, 10, 0.95) 0%, rgba(5, 7, 10, 0.3) 60%, rgba(5, 7, 10, 0.85) 100%);
+}
+
+.red-mesh {
+  background: radial-gradient(circle at center, rgba(30, 5, 10, 0.2) 0%, rgba(10, 2, 5, 0.85) 85%),
+              linear-gradient(to right, rgba(15, 3, 5, 0.95) 0%, rgba(15, 3, 5, 0.3) 60%, rgba(15, 3, 5, 0.85) 100%);
+}
+
+/* Slide Content UI */
+.slide-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  padding: 0 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-left {
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.8s ease 0.2s, opacity 0.8s ease 0.2s;
+}
+
+.slide-item.active-slide .content-left,
+.slide-item.active-slide .content-right {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.module-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: #38bdf8;
+}
+
+.alert-tag { color: #ef4444; }
+.safe-tag { color: #10b981; }
+
+.headline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.8rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.summary {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.bullet-grid {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.b-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #38bdf8;
+  padding: 8px 14px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.b-item span {
+  display: block;
+  font-weight: 700;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.alert-border { border-left-color: #ef4444; }
+.safe-border { border-left-color: #10b981; }
+
+/* HUD Right Metrik */
+.content-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: right;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.8s ease 0.3s, opacity 0.8s ease 0.3s;
+}
+
+.hud-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hud-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: #64748b;
+}
+
+.hud-val {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #f8fafc;
+}
+
+.alert-text { color: #ef4444; }
+.safe-text { color: #10b981; }
+
+/* Bottom Nav & Controls */
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+}
+
+.floating-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+}
+
+.pulse-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.arrow-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.arrow-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.slide-count {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  color: #64748b;
+}
+
+.slide-count span:first-child {
+  color: #ffffff;
+  font-weight: 700;
+}
