@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next-Gen Cyber Security Architecture</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Viewport Wrapper (Rasio 16:9 Responsif) -->
+  <div class="stage-container">
+    <div class="screen-16-9">
+      
+      <!-- Latar Belakang Video Penuh -->
+      <div class="video-canvas-container">
+        <video id="main-video" autoplay muted loop playsinline>
+          <source id="video-src" src="assets/video1.mp4" type="video/mp4">
+        </video>
+        <div class="cinema-vignette"></div>
+      </div>
+
+      <!-- Top Navigation & Pill Selector -->
+      <header class="top-nav">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          <span>NETDEFENSE LABS</span>
+        </div>
+
+        <nav class="pill-nav">
+          <button class="pill-item active" data-index="0">01 Firewall</button>
+          <button class="pill-item" data-index="1">02 IDS / IPS</button>
+          <button class="pill-item" data-index="2">03 Protection</button>
+        </nav>
+
+        <div class="tech-badge">
+          <span>LATENCY: <b>1.2ms</b></span>
+        </div>
+      </header>
+
+      <!-- Overlay Content Utama (Gaya Editorial Minimalis Video 4) -->
+      <main class="main-content">
+        <div class="editorial-text">
+          <span class="category-label" id="cat-label">CORE INFRASTRUCTURE</span>
+          <h1 class="headline" id="main-headline">Protecting perimeter data before it flows.</h1>
+          <p class="summary" id="main-desc">
+            Hardware Firewall bertindak sebagai pos pemeriksaan terluar jaringan, memfilter traffic data murni pada layer fisik tanpa intervensi OS pengguna.
+          </p>
+          <div class="cta-row">
+            <button class="btn-primary" id="explore-btn">Analyze Gateway &#8594;</button>
+          </div>
+        </div>
+
+        <!-- Sidebar Metrik & Telemetri Kanan -->
+        <aside class="telemetry-aside">
+          <div class="metric-block">
+            <span class="m-label">THREAT LEVEL</span>
+            <span class="m-val" id="metric-threat">NORMAL</span>
+          </div>
+          <div class="metric-block">
+            <span class="m-label">THROUGHPUT</span>
+            <span class="m-val" id="metric-speed">10 Gbps</span>
+          </div>
+          <div class="metric-block">
+            <span class="m-label">INSPECTION</span>
+            <span class="m-val" id="metric-type">Stateful / DPI</span>
+          </div>
+        </aside>
+      </main>
+
+      <!-- Bottom Floating Status Bar -->
+      <footer class="bottom-bar">
+        <div class="floating-pill">
+          <span class="pulse-icon"></span>
+          <span id="footer-caption">Hardware appliance routing 4-port Gigabit LAN active.</span>
+        </div>
+        <div class="slide-indicator">
+          <span id="current-slide">01</span> / <span>03</span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
