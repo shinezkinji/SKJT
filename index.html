@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALCHE // CYBER DEFENSE LAB</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body {
+      background-color: #030407;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10;
+      pointer-events: none;
+    }
+    /* Fixed Industrial Grid Overlay */
+    .viewport-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 100px 100px;
+    }
+    .viewport-grid::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 30%, #030407 95%);
+    }
+    /* Blueprint Lines in Section 4 */
+    .blueprint-vertical-lines {
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+      background-size: calc(100vw / 12) 100%;
+    }
+    /* Smooth Scroll helper */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-[#030407] transition-colors duration-700" id="body-bg">
+
+  <canvas id="webgl-canvas"></canvas>
+
+  <div class="viewport-grid"></div>
+
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-7 mix-blend-difference pointer-events-auto">
+    <div class="flex items-center space-x-6">
+      <div class="font-black text-xl tracking-tighter text-white flex items-center gap-2">
+        <span class="inline-block w-2.5 h-2.5 bg-white"></span>
+        <span>NETGUARD //</span>
+      </div>
+      <div class="hidden md:flex space-x-6 font-mono-tech text-[10px] tracking-widest text-neutral-400">
+        <a href="#hero" class="hover:text-white transition">INDEX</a>
+        <a href="#showcase" class="hover:text-white transition">MODULES</a>
+        <a href="#vision" class="hover:text-white transition">PROTOCOL</a>
+        <a href="#blueprint" class="hover:text-white transition">BLUEPRINT</a>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-4">
+      <div class="hidden sm:flex items-center space-x-3 font-mono-tech text-[10px] text-neutral-400 border border-white/20 px-3 py-1 rounded-full">
+        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+        <span id="coord-display">LAT 107.7 // SECURE</span>
+      </div>
+      <div class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center cursor-pointer hover:border-white transition">
+        <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
+      </div>
+    </div>
+  </header>
+
+  <footer class="fixed bottom-6 left-6 md:left-12 right-6 md:right-12 z-50 flex justify-between items-end font-mono-tech text-[10px] tracking-widest text-neutral-400 mix-blend-difference pointer-events-none">
+    <div>
+      <p class="text-white font-bold">CYBER SECURITY ARCHITECTURE</p>
+      <p class="text-neutral-500 mt-0.5">STATEFUL INSPECTION // ZERO-TRUST</p>
+    </div>
+    <div class="text-right">
+      <p class="text-white font-bold" id="scroll-percentage">00% // SCAN</p>
+      <p class="text-neutral-500 mt-0.5">© 2026 NETSEC LAB, INC.</p>
+    </div>
+  </footer>
+
+  <main class="relative z-20">
+
+    <section id="hero" class="h-screen w-full relative flex items-center justify-center flex-col px-6">
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+        <h1 class="text-[18vw] font-black text-white/[0.09] tracking-tighter leading-none text-center">
+          CYBER
+        </h1>
+      </div>
+
+      <div class="relative z-30 text-center max-w-2xl mt-48">
+        <div class="inline-block font-mono-tech text-[10px] tracking-[0.3em] uppercase px-3 py-1 bg-white/5 border border-white/10 rounded-full mb-4 text-cyan-400">
+          // DEFENSE ENGINE V.4
+        </div>
+        <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight uppercase leading-tight">
+          Next-Gen Network Security
+        </h2>
+        <p class="text-neutral-400 text-xs md:text-sm mt-3 font-light max-w-md mx-auto leading-relaxed">
+          Simulasi visual arsitektur pertahanan data real-time melalui pembiasan trafik & inspeksi mendalam.
+        </p>
+      </div>
+
+      <div class="absolute bottom-12 font-mono-tech text-[10px] tracking-widest text-neutral-500 animate-pulse">
+        [ SCROLL DOWN TO INITIALIZE MODULES ]
+      </div>
+    </section>
+
+    <section id="showcase" class="h-[250vh] relative">
+      <div class="sticky top-0 h-screen w-full flex flex-col justify-between py-24 px-6 md:px-12 pointer-events-none">
+        
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="font-mono-tech text-[10px] text-cyan-400 tracking-widest block mb-1">SECTION 02 // MODULES</span>
+            <h3 class="text-2xl md:text-4xl font-extrabold tracking-tight text-white uppercase" id="module-title">
+              01. Perimeter Firewall
+            </h3>
+          </div>
+          <div class="text-right font-mono-tech text-xs text-neutral-400 max-w-xs hidden md:block" id="module-desc">
+            Inspeksi lalu lintas paket data tingkat mendalam (DPI) pada gerbang perimeter terluar.
+          </div>
+        </div>
+
+        <div class="w-full flex justify-between items-end font-mono-tech text-[11px] text-neutral-500">
+          <div>DRAG / SCROLL TO CYCLE PROTOCOLS</div>
+          <div class="text-cyan-400" id="module-indicator">MODULE [ 1 / 3 ]</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vision" class="min-h-screen w-full py-32 px-6 md:px-24 flex items-center justify-center relative">
+      <div class="max-w-4xl w-full text-center relative z-30">
+        <span class="font-mono-tech text-xs tracking-widest block mb-6 text-neutral-600 font-bold">
+          // ZERO TRUST PARADIGMA
+        </span>
+        <h2 class="text-4xl md:text-7xl font-black tracking-tight leading-tight uppercase text-neutral-900 mb-8" id="vision-text">
+          "Never Trust, Always Verify Every Packet."
+        </h2>
+        <p class="text-neutral-600 text-sm md:text-base max-w-2xl mx-auto font-normal leading-relaxed mb-10">
+          Di era komputasi terdistribusi, perimeter tradisional tidak lagi cukup. Paradigma Zero Trust memastikan setiap identitas, perangkat, dan lalu lintas mikro diisolasi dan diotentikasi secara kontinu.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left font-mono-tech text-xs">
+          <div class="p-6 bg-neutral-100 rounded-xl border border-neutral-300">
+            <span class="text-neutral-400 block text-[10px] mb-2">LAYER 01</span>
+            <h4 class="font-bold text-neutral-900 mb-2">Micro-segmentation</h4>
+            <p class="text-neutral-600 font-sans text-xs">Membatasi pergerakan lateral ancaman malware di dalam jaringan internal.</p>
+          </div>
+          <div class="p-6 bg-neutral-100 rounded-xl border border-neutral-300">
+            <span class="text-neutral-400 block text-[10px] mb-2">LAYER 02</span>
+            <h4 class="font-bold text-neutral-900 mb-2">Continuous Auth</h4>
+            <p class="text-neutral-600 font-sans text-xs">Validasi multi-faktor adaptif berdasarkan sinyal risiko perilaku mesin.</p>
+          </div>
+          <div class="p-6 bg-neutral-100 rounded-xl border border-neutral-300">
+            <span class="text-neutral-400 block text-[10px] mb-2">LAYER 03</span>
+            <h4 class="font-bold text-neutral-900 mb-2">AES-256 Quantum</h4>
+            <p class="text-neutral-600 font-sans text-xs">Enkripsi muatan data end-to-end yang tahan terhadap komputasi kuantum.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="blueprint" class="min-h-screen w-full blueprint-vertical-lines relative flex flex-col justify-center items-center px-6 py-24">
+      <div class="max-w-4xl w-full">
+        <div class="flex justify-between items-center border-b border-white/20 pb-4 mb-8 font-mono-tech text-xs">
+          <span class="text-cyan-400">BLUEPRINT // SYS_TOPOLOGY_09</span>
+          <span class="text-neutral-500">ISO/IEC 27001 COMPLIANT</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-3xl md:text-5xl font-black uppercase text-white mb-6 leading-tight">
+              Integrated Defense Framework
+            </h3>
+            <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed mb-6">
+              Visualisasi topologi terpadu yang menggabungkan mitigasi DDoS berbasis edge, sistem deteksi anomali heuristik IDS/IPS, serta proteksi data endpoint dalam satu siklus tertutup.
+            </p>
+            <div class="font-mono-tech text-[11px] space-y-2 text-neutral-300">
+              <div class="flex justify-between border-b border-white/10 pb-1">
+                <span>INTRUSION PREVENTION LATENCY:</span>
+                <span class="text-emerald-400">&lt; 0.84 ms</span>
+              </div>
+              <div class="flex justify-between border-b border-white/10 pb-1">
+                <span>ANOMALY RECOGNITION RATE:</span>
+                <span class="text-emerald-400">99.98 %</span>
+              </div>
+              <div class="flex justify-between border-b border-white/10 pb-1">
+                <span>ENCRYPTION PAYLOAD INTEGRITY:</span>
+                <span class="text-emerald-400">VALID (SHA-512)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-white/20 p-8 rounded-2xl bg-black/60 backdrop-blur-md">
+            <div class="aspect-square flex items-center justify-center relative">
+              <svg class="w-full h-full text-cyan-400 stroke-current fill-none stroke-[1.2]" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="70" stroke-dasharray="4,4" class="opacity-40 animate-spin" style="animation-duration: 40s; transform-origin: center;" />
+                <polygon points="100,25 170,145 30,145" class="opacity-70" />
+                <circle cx="100" cy="100" r="15" class="fill-cyan-400/20" />
+                <line x1="100" y1="25" x2="100" y2="100" />
+                <line x1="170" y1="145" x2="100" y2="100" />
+                <line x1="30" y1="145" x2="100" y2="100" />
+                <circle cx="100" cy="25" r="4" class="fill-white" />
+                <circle cx="170" cy="145" r="4" class="fill-white" />
+                <circle cx="30" cy="145" r="4" class="fill-white" />
+                <text x="100" y="103" font-size="6" text-anchor="middle" fill="#ffffff" font-family="monospace">CORE</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    // ==========================================
+    // 1. THREE.JS ENGINE SETUP
+    // ==========================================
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 7);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // ==========================================
+    // 2. HERO PRISM (CHROMATIC REFRACTION SHADER)
+    // ==========================================
+    const heroPrismGroup = new THREE.Group();
+    scene.add(heroPrismGroup);
+
+    // Triangular Prism Shape
+    const prismGeo = new THREE.ConeGeometry(1.6, 2.2, 3);
+
+    // Custom Glass Dispersion Shader (Alche Studio effect)
+    const prismShaderMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uRefraction: { value: 0.8 }
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        void main() {
+          vec3 viewDir = normalize(-vPosition);
+          float fresnel = 1.0 - max(dot(viewDir, vNormal), 0.0);
+          fresnel = pow(fresnel, 2.5);
+
+          // Chromatic Dispersion (Rainbow Aberration)
+          float r = sin(fresnel * 5.0 + uTime * 2.0) * 0.5 + 0.5;
+          float g = sin(fresnel * 5.0 + uTime * 2.0 + 2.09) * 0.5 + 0.5;
+          float b = sin(fresnel * 5.0 + uTime * 2.0 + 4.18) * 0.5 + 0.5;
+
+          vec3 glassCore = vec3(0.04, 0.06, 0.1);
+          vec3 rainbowSplit = vec3(r, g, b) * 1.2;
+          vec3 color = mix(glassCore, rainbowSplit, fresnel);
+
+          gl_FragColor = vec4(color, 0.9);
+        }
+      `,
+      transparent: true,
+      side: THREE.DoubleSide
+    });
+
+    const prismMesh = new THREE.Mesh(prismGeo, prismShaderMat);
+    heroPrismGroup.add(prismMesh);
+
+    // Blueprint lines around the prism
+    const prismWireframe = new THREE.LineSegments(
+      new THREE.WireframeGeometry(prismGeo),
+      new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 })
+    );
+    heroPrismGroup.add(prismWireframe);
+
+    // ==========================================
+    // 3. 3D CURVED CAROUSEL CARDS (DETIK 0:02 - 0:04)
+    // ==========================================
+    const carouselGroup = new THREE.Group();
+    scene.add(carouselGroup);
+    carouselGroup.position.set(0, 0, -10); // Hidden initially behind camera
+
+    // Canvas Textures for Cyber Security Modules
+    function createCyberCardTexture(tag, title, subtext, accentColor) {
+      const cvs = document.createElement('canvas');
+      cvs.width = 1024;
+      cvs.height = 640;
+      const ctx = cvs.getContext('2d');
+
+      // Card Background
+      ctx.fillStyle = '#080c14';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+      // Card Border & Grid
+      ctx.strokeStyle = accentColor;
+      ctx.lineWidth = 6;
+      ctx.strokeRect(20, 20, cvs.width - 40, cvs.height - 40);
+
+      // Scanlines
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+      for (let y = 30; y < cvs.height - 30; y += 8) {
+        ctx.fillRect(30, y, cvs.width - 60, 2);
+      }
+
+      // Metadata Tag
+      ctx.font = 'bold 24px "JetBrains Mono", monospace';
+      ctx.fillStyle = accentColor;
+      ctx.fillText(`// SYSTEM MODULE: ${tag}`, 60, 90);
+
+      // Main Title
+      ctx.font = '900 68px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(title, 60, 240);
+
+      // Subtext / Description
+      ctx.font = '30px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText(subtext, 60, 320);
+
+      // Industrial Status Bar
+      ctx.fillStyle = accentColor;
+      ctx.fillRect(60, 480, 240, 10);
+      ctx.font = 'bold 20px "JetBrains Mono", monospace';
+      ctx.fillText('STATUS: OPERATIONAL 100%', 60, 530);
+
+      return new THREE.CanvasTexture(cvs);
+    }
+
+    const cardData = [
+      { tag: '01', title: 'FIREWALL DPI', desc: 'Real-time Deep Packet Filtering', color: '#00f0ff' },
+      { tag: '02', title: 'IDS / IPS ENGINE', desc: 'Heuristic Anomaly Detection', color: '#f59e0b' },
+      { tag: '03', title: 'AES-256 CIPHER', desc: 'End-to-End Tunnel Encryption', color: '#10b981' }
+    ];
+
+    const cardPlanes = [];
+    const radius = 4.2; // Cylinder radius like Alche
+    const cardGeometry = new THREE.PlaneGeometry(3.2, 2.0, 16, 16);
+
+    cardData.forEach((data, index) => {
+      const angle = (index - 1) * 0.95; // Arrange in curve
+      const texture = createCyberCardTexture(data.tag, data.title, data.desc, data.color);
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.95
+      });
+
+      const plane = new THREE.Mesh(cardGeometry, material);
+      plane.position.x = Math.sin(angle) * radius;
+      plane.position.z = Math.cos(angle) * radius - radius;
+      plane.rotation.y = angle;
+
+      carouselGroup.add(plane);
+      cardPlanes.push(plane);
+    });
+
+    // ==========================================
+    // 4. GSAP SCROLL ANIMATION & TIMELINE
+    // ==========================================
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Update Scroll percentage in footer
+    ScrollTrigger.create({
+      trigger: "body",
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        const pct = Math.round(self.progress * 100);
+        document.getElementById('scroll-percentage').innerText = `${pct < 10 ? '0' + pct : pct}% // SCAN`;
+      }
+    });
+
+    // MASTER TIMELINE
+    const masterTL = gsap.timeline({
+      scrollTrigger: {
+        trigger: "main",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.2
+      }
+    });
+
+    // --- PHASE 1: Hero Prism dissolves into Cylinder Carousel (Detik 0:02) ---
+    masterTL.to(heroPrismGroup.position, { z: -4, y: 1.5, ease: "power2.inOut" }, 0)
+      .to(heroPrismGroup.rotation, { x: 2.5, y: 3.5, ease: "none" }, 0)
+      .to(heroPrismGroup.scale, { x: 0.1, y: 0.1, z: 0.1, ease: "power2.in" }, 0.2)
+      .to(carouselGroup.position, { z: 0.5, ease: "power2.out" }, 0.2);
+
+    // --- PHASE 2: Cycle Carousel across modules (Detik 0:02 - 0:04) ---
+    masterTL.to(carouselGroup.rotation, {
+      y: -1.9,
+      ease: "none",
+      onUpdate: () => {
+        const rot = carouselGroup.rotation.y;
+        const titleEl = document.getElementById('module-title');
+        const descEl = document.getElementById('module-desc');
+        const indEl = document.getElementById('module-indicator');
+
+        if (rot > -0.6) {
+          titleEl.innerText = "01. Perimeter Firewall";
+          descEl.innerText = "Inspeksi lalu lintas paket data tingkat mendalam (DPI) pada gerbang perimeter terluar.";
+          indEl.innerText = "MODULE [ 1 / 3 ]";
+        } else if (rot > -1.3) {
+          titleEl.innerText = "02. IDS & IPS Mitigation";
+          descEl.innerText = "Mendeteksi pola intrusi zero-day dan secara aktif memblokir transmisi penyerang.";
+          indEl.innerText = "MODULE [ 2 / 3 ]";
+        } else {
+          titleEl.innerText = "03. Cryptographic Shield";
+          descEl.innerText = "Enkripsi muatan payload menggunakan cipher AES-256 dan hash SHA-512.";
+          indEl.innerText = "MODULE [ 3 / 3 ]";
+        }
+      }
+    }, 0.3);
+
+    // --- PHASE 3: White Screen Inversion (Detik 0:04 - 0:07) ---
+    masterTL.to("#body-bg", { backgroundColor: "#f3f4f6", duration: 0.2 }, 0.65)
+      .to(carouselGroup.position, { z: -10, y: -2, ease: "power2.in" }, 0.65)
+      .to("#vision-text", { color: "#000000" }, 0.65);
+
+    // --- PHASE 4: Blueprint Dark Wireframe (Detik 0:08 - 0:10) ---
+    masterTL.to("#body-bg", { backgroundColor: "#030407", duration: 0.2 }, 0.85)
+      .to(heroPrismGroup.position, { x: 0, y: 0, z: 2, ease: "power2.out" }, 0.85)
+      .to(heroPrismGroup.scale, { x: 1, y: 1, z: 1, ease: "power2.out" }, 0.85)
+      .to(prismWireframe.material, { opacity: 0.9 }, 0.85);
+
+    // ==========================================
+    // 5. MOUSE TRACKING & INTERACTIVE PHYSICS
+    // ==========================================
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      
+      const coordEl = document.getElementById('coord-display');
+      if (coordEl) {
+        coordEl.innerText = `X: ${e.clientX} // Y: ${e.clientY}`;
+      }
+    });
+
+    // RENDER LOOP
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // Shader time uniform
+      prismShaderMat.uniforms.uTime.value = elapsedTime;
+
+      // Mouse Inertia Lerp
+      targetX += (mouseX - targetX) * 0.05;
+      targetY += (mouseY - targetY) * 0.05;
+
+      // Subtle Hero Prism Idle Spin & Mouse Reaction
+      heroPrismGroup.rotation.y += 0.005;
+      heroPrismGroup.rotation.x = targetY * 0.3;
+      heroPrismGroup.position.x = targetX * 0.4;
+
+      camera.position.x = targetX * 0.3;
+      camera.position.y = -targetY * 0.3;
+      camera.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Responsive Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    });
+  </script>
+</body>
+</html>
