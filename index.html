@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cybersecurity Architecture Showcase</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="stage-container">
+    <div class="screen-16-9" id="screen">
+      
+      <!-- Top Dynamic Navigation Bar -->
+      <header class="top-nav">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          <span>NETDEFENSE LABS</span>
+        </div>
+
+        <nav class="pill-nav">
+          <button class="pill-item active" data-index="0">01 Hardware Firewall</button>
+          <button class="pill-item" data-index="1">02 IDS / IPS Alert</button>
+          <button class="pill-item" data-index="2">03 Antimalware Vault</button>
+        </nav>
+
+        <div class="tech-badge">
+          <span>STATUS: <b id="system-status">ACTIVE INSPECTION</b></span>
+        </div>
+      </header>
+
+      <!-- Carousel Track: Video & UI Menyatu Bergerak Bersama -->
+      <div class="carousel-track" id="track">
+        
+        <!-- SLIDE 1: Hardware Firewall Appliance -->
+        <section class="slide-item" data-theme="#38bdf8">
+          <div class="video-layer">
+            <video class="slide-video" autoplay muted loop playsinline>
+              <source src="assets/video1.mp4" type="video/mp4">
+            </video>
+            <div class="overlay-mesh"></div>
+          </div>
+          <div class="slide-content">
+            <div class="content-left">
+              <span class="module-tag">PHYSICAL APPLIANCE // PORT 1-4</span>
+              <h1 class="headline">Dedicated Multi-Port Hardware Gateway.</h1>
+              <p class="summary">
+                Menganalisis arsitektur box mini-PC hardware firewall dengan segmentasi LAN 1 hingga LAN 4. Memisahkan subnet kantor dan DMZ secara terisolasi sebelum trafik memasuki switch internal.
+              </p>
+              <div class="bullet-grid">
+                <div class="b-item"><span>LAN 1-4</span> Gigabit Ethernet Isolation</div>
+                <div class="b-item"><span>Passive</span> Fanless Heat Exhaust Chassis</div>
+              </div>
+            </div>
+            <div class="content-right">
+              <div class="hud-stat">
+                <span class="hud-label">INPUT PORTS</span>
+                <span class="hud-val">4x RJ45 PHY</span>
+              </div>
+              <div class="hud-stat">
+                <span class="hud-label">THROUGHPUT</span>
+                <span class="hud-val">2.5 Gbps Line</span>
+              </div>
+              <div class="hud-stat">
+                <span class="hud-label">PACKET DROP</span>
+                <span class="hud-val">0.000%</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SLIDE 2: IDS/IPS Intrusion Detection -->
+        <section class="slide-item" data-theme="#ef4444">
+          <div class="video-layer">
+            <video class="slide-video" autoplay muted loop playsinline>
+              <source src="assets/video2.mp4" type="video/mp4">
+            </video>
+            <div class="overlay-mesh red-mesh"></div>
+          </div>
+          <div class="slide-content">
+            <div class="content-left">
+              <span class="module-tag alert-tag">ANOMALY DETECTED // ACCESS DENIED</span>
+              <h1 class="headline">Active Threat Vector Interception.</h1>
+              <p class="summary">
+                Peringatan merah real-time memindai anomali trafik global dan pola intrusi berbahaya. Sistem IPS langsung melakukan drop koneksi secara otomatis dan memblokir IP penyerang di peta jaringan.
+              </p>
+              <div class="bullet-grid">
+                <div class="b-item alert-border"><span>Rule</span> Signature Threat Match</div>
+                <div class="b-item alert-border"><span>Geo-IP</span> Dynamic Blacklist Filter</div>
+              </div>
+            </div>
+            <div class="content-right">
+              <div class="hud-stat">
+                <span class="hud-label">INTRUSION RISK</span>
+                <span class="hud-val alert-text">CRITICAL</span>
+              </div>
+              <div class="hud-stat">
+                <span class="hud-label">ACTION TAKEN</span>
+                <span class="hud-val alert-text">DROP & RESET</span>
+              </div>
+              <div class="hud-stat">
+                <span class="hud-label">ATTACK ORIGIN</span>
+                <span class="hud-val">Multi-Vector IP</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SLIDE 3: Antimalware / Cryptographic Vault -->
+        <section class="slide-item" data-theme="#10b981">
+          <div class="video-layer">
+            <video class="slide-video" autoplay muted loop playsinline>
+              <source src="assets/video3.mp4" type="video/mp4">
+            </video>
+            <div class="overlay-mesh cyan-mesh"></div>
+          </div>
+          <div class="slide-content">
+            <div class="content-left">
+              <span class="module-tag safe-tag">CIRCUIT ENCRYPTION // ENDPOINT ENGINE</span>
+              <h1 class="headline">Autonomous Malware Lock & Integrity.</h1>
+              <p class="summary">
+                Visualisasi HUD sirkuit gembok digital yang mengamankan integritas data dari infeksi Trojan, Ransomware, dan eksploitasi memori dengan enkripsi data terpusat.
+              </p>
+              <div class="bullet-grid">
+                <div class="b-item safe-border"><span>Behavior</span> Heuristic Neural Engine</div>
+                <div class="b-item safe-border"><span>Cipher</span> AES-256 State Verification</div>
+              </div>
+            </div>
+            <div class="content-right">
+              <div class="hud-stat">
+                <span class="hud-label">INTEGRITY</span>
+                <span class="hud-val safe-text">100% SECURE</span>
+              </div>
+              <div class="hud-stat">
+                <span class="hud-label">ZERO-DAY ENGINE</span>
+                <span class="hud-val safe-text">SYNCHRONIZED</span>
+              </div>
+              <div class="hud-stat">
+                <span class="hud-label">DECRYPT SPEED</span>
+                <span class="hud-val">&lt; 0.4 ms</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Bottom Floating Indicator -->
+      <footer class="bottom-bar">
+        <div class="floating-pill">
+          <span class="pulse-icon" id="pulse-dot"></span>
+          <span id="footer-caption">Modul 1: Sharevdi Firewall Appliance Standby.</span>
+        </div>
+        
+        <div class="nav-arrows">
+          <button class="arrow-btn" id="prev-btn">&#8592;</button>
+          <div class="slide-count">
+            <span id="curr-num">01</span> / <span>03</span>
+          </div>
+          <button class="arrow-btn" id="next-btn">&#8594;</button>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
