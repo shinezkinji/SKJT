@@ -1,0 +1,11 @@
+// Memuat model 3D Sci-Fi Helmet / Core langsung via URL CDN resmi
+const loader = new THREE.GLTFLoader();
+loader.load(
+  'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
+  (gltf) => {
+    mainGroup.remove(model3D);
+    model3D = gltf.scene;
+    model3D.scale.set(1.8, 1.8, 1.8);
+    mainGroup.add(model3D);
+  }
+);
